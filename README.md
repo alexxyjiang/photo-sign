@@ -1,0 +1,2 @@
+# photomgr
+Photo Management Application
