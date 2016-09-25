@@ -8,7 +8,7 @@
 
 namespace PhotoMgr {
   class Singleton {
-    static Singleton *p_instance;
+    static Singleton *_p_instance;
 
     Singleton();
     ~Singleton();

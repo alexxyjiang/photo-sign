@@ -6,18 +6,18 @@
 #include "singleton.h"
 
 namespace PhotoMgr {
-  //private
-  Singleton* Singleton::p_instance;
+  // private
+  Singleton* Singleton::_p_instance;
   Singleton::Singleton(){}
   Singleton::~Singleton(){}
   Singleton::Singleton(const Singleton&){}
   void Singleton::operator=(const Singleton&){}
 
-  //public
+  // public
   Singleton* Singleton::get_instance() {
-    if (!p_instance) {
-      p_instance  = new Singleton();
+    if (!_p_instance) {
+      _p_instance  = new Singleton();
     }
-    return p_instance;
+    return _p_instance;
   }
 } // namespace PhotoMgr
