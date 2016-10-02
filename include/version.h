@@ -10,6 +10,7 @@
 
 namespace PhotoMgr {
   const std::string PHOTOMGR_VERSION  = "0.1";
+  const std::string GFLAGS_VERSION    = "2.2.0";
   void set_photomgr_version();
   void print_all_version_info();
 } // namespace PhotoMgr

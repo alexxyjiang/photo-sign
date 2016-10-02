@@ -3,8 +3,9 @@
  *  @date:    2016-09-25
  */
 
-#include <stdio.h>
+#include <iostream>
 #include "gflags/gflags.h"
+#include "FreeImagePlus.h"
 #include "version.h"
 
 using google::SetVersionString;
@@ -15,6 +16,8 @@ namespace PhotoMgr {
   }
 
   void print_all_version_info() {
-    printf("Photo Manager Version: %s\n", PHOTOMGR_VERSION.c_str());
+    std::cout << "Photo Manager Version: " << PHOTOMGR_VERSION << std::endl
+              << "GFlag Version: " << GFLAGS_VERSION << std::endl
+              << "FreeImage Version: " << FreeImage_GetVersion() << std::endl;
   }
 } // namespace PhotoMgr
