@@ -3,6 +3,7 @@
  *  @date:    2016-09-25
  */
 
+#include <stdio.h>
 #include "gflags/gflags.h"
 #include "version.h"
 

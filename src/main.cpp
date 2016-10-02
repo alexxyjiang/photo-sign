@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "gflags/gflags.h"
+#include "FreeImagePlus.h"
 #include "mode.h"
 #include "version.h"
 
@@ -20,8 +20,7 @@ int main(int argc, char** argv)
       print_all_version_info();
       break;
     case PhotoMgr::MODE_RENAME:
-      printf("Rename\n");
-    break;
+      break;
   }
   return 0;
 }

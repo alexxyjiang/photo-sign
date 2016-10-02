@@ -22,7 +22,7 @@ namespace PhotoMgr {
     ModeType  _type;
   public:
     void set_type();
-    void set_type(const ModeType&);
+    void set_type(const ModeType& type);
     const ModeType& get_type();
   };
 } // namespace PhotoMgr

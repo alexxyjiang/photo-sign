@@ -8,6 +8,7 @@
 
 namespace PhotoMgr {
   class Singleton {
+  private:
     static Singleton *_p_instance;
 
     Singleton();
