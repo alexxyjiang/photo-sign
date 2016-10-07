@@ -7,11 +7,11 @@
 #define _PHOTOMGR_IMAGENAME_H_
 
 #include <string>
-#include <vector>
+#include <map>
 
 namespace PhotoMgr {
-  const std::string DEFAULT_DEVICE_NAME = "DC";
-  const std::string DEFAULT_GROUP_NAME  = "NOTSET";
+  const std::string DEFAULT_DEVICE_NAME = "SDC";
+  const std::string DEFAULT_GROUP_NAME  = "GRP";
 
   class ImageName {
   private:
@@ -19,22 +19,31 @@ namespace PhotoMgr {
     std::string _group_name;
     unsigned    _index;
   public:
-    ImageName(const std::string &device_name, const std::string &group_name, unsigned index);
+    ImageName(const std::string &device_name, const std::string &group_name, const unsigned index);
     void set_device_name(const std::string &device_name);
     void set_group_name(const std::string &group_name);
-    void set_index(unsigned index);
+    void set_index(const unsigned index);
     std::string get_imagename();
   };
 
-  class ImagePathNameFormat {
+  class ImagePathFormatName {
   private:
-    std::string       _path_name;
+    std::string _path_name;
   public:
+    ImagePathFormatName(const std::string &path_name);
+    void set_path_name(const std::string &path_name);
+    std::string get_format_extension();
   };
 
-  class ImageRenameMgr {
+  class PathImageNameMgr {
   private:
-    std::vector<ImageName> _v_imgname;
+    std::string                         _base_path;
+    std::map<std::string, std::string>  _file_name_mapping;
+  public:
+    PathImageNameMgr(const std::string &base_path);
+    void set_base_path(const std::string &base_path);
+    void clear_mapping();
+    unsigned scan_base_path(const std::string &group_name);
   };
 } // namespace PhotoMgr
 
