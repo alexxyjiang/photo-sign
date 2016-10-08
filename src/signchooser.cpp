@@ -97,8 +97,9 @@ namespace PhotoMgr {
   int SignDrawer::sign_photo(fipImage *p_dest, const fipImage *p_src, const sign_conf_t sign_conf) {
     fipImage  *p_sign_chosen  = NULL;
     double    best_distance   = 0.0;
-    unsigned  best_x0, best_x1, best_y0, best_y1;
+    unsigned  best_x0, best_x1, best_y0, best_y1, best_scale;
     best_x0 = best_x1 = best_y0 = best_y1 = 0;
+    best_scale  = 1;
     for (std::vector<fipImage *>::const_iterator iter = _vec_sign_library.begin(); iter != _vec_sign_library.end(); ++iter) {
       image_size_t  photo_size, sign_size;
       photo_size.width  = p_src->getWidth();
@@ -126,6 +127,7 @@ namespace PhotoMgr {
             best_y0       = sign_y0;
             best_x1       = sign_x1;
             best_y1       = sign_y1;
+            best_scale    = sign_pm.sign_conf().scale_rate;
           }
         }
       }
@@ -133,10 +135,15 @@ namespace PhotoMgr {
 
     if (p_sign_chosen != NULL) {
       (*p_dest) = (*p_src);
-      for (unsigned i = 0; i < p_sign_chosen->getHeight(); ++i) {
-        for (unsigned j = 0; j < p_sign_chosen->getWidth(); ++j) {
+      fipImage  fip_sign;
+      fip_sign  = (*p_sign_chosen);
+      if (FLAGS_auto_sign_scale) {
+        fip_sign.rescale(p_sign_chosen->getWidth() * best_scale, p_sign_chosen->getHeight() * best_scale, FILTER_LANCZOS3);
+      }
+      for (unsigned i = 0; i < fip_sign.getHeight(); ++i) {
+        for (unsigned j = 0; j < fip_sign.getWidth(); ++j) {
           RGBQUAD rgb_dest, rgb_sign;
-          if (p_dest->getPixelColor(best_x0 + j, best_y0 + i, &rgb_dest) && p_sign_chosen->getPixelColor(j, i, &rgb_sign) && rgb_sign.rgbReserved > 0) {
+          if (p_dest->getPixelColor(best_x0 + j, best_y0 + i, &rgb_dest) && fip_sign.getPixelColor(j, i, &rgb_sign) && rgb_sign.rgbReserved > 0) {
 
             rgb_dest.rgbRed       = ((unsigned)rgb_dest.rgbRed    * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbRed    * rgb_sign.rgbReserved) / 255;
             rgb_dest.rgbGreen     = ((unsigned)rgb_dest.rgbGreen  * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbGreen  * rgb_sign.rgbReserved) / 255;

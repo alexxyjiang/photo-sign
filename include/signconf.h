@@ -6,6 +6,10 @@
 #ifndef _PHOTOMGR_SIGNCONF_H_
 #define _PHOTOMGR_SIGNCONF_H_
 
+#include "gflags/gflags.h"
+
+DECLARE_bool(auto_sign_scale);
+
 namespace PhotoMgr {
   enum SignPosition {
     DEFAULT       = 0,
@@ -17,6 +21,7 @@ namespace PhotoMgr {
 
   struct sign_conf_t {
     unsigned      min_sign_margin;
+    unsigned      scale_rate;
     SignPosition  sign_posi;
     double        sign_rate;
   };
@@ -41,6 +46,7 @@ namespace PhotoMgr {
     void set_sign_size(const image_size_t &sign_size);
     void set_sign_conf(const sign_conf_t &sign_conf);
     int calc_sign_posi();
+    sign_conf_t sign_conf();
     unsigned sign_x0();
     unsigned sign_x1();
     unsigned sign_y0();

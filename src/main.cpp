@@ -28,9 +28,10 @@ int main(int argc, char** argv)
     case PhotoMgr::MODE_SIGN:
       SignPhotoMgr  spmgr(argv[1], argv[2]);
       sign_conf_t   sign_conf;
-      sign_conf.min_sign_margin = 100;
+      sign_conf.min_sign_margin = 120;
+      sign_conf.scale_rate      = 1;
       sign_conf.sign_posi       = PhotoMgr::BOTTOM_RIGHT;
-      sign_conf.sign_rate       = 0.15;
+      sign_conf.sign_rate       = 0.24;
       spmgr.sign_all_photos(sign_conf);
       break;
   }
