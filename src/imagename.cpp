@@ -1,4 +1,4 @@
-/** mode.h  - Image Name Management
+/** imagename.cpp - Image Name Management
  *  @author:  Alex.J. (alexxyjiang@gmail.com)
  *  @date:    2016-09-25
  */
@@ -120,7 +120,7 @@ namespace PhotoMgr {
             inner_rename_name = iname.get_imagename();
             _file_name_mapping[inner_orig_name] = inner_rename_name;
           }
-          rename(orig_name.c_str(), (inner_rename_name + "." + ipfname.get_format_extension()).c_str());
+          // rename(orig_name.c_str(), (inner_rename_name + "." + ipfname.get_format_extension()).c_str());
         }
       }
       closedir(dp);
