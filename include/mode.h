@@ -14,7 +14,8 @@ DECLARE_uint32(mode);
 namespace PhotoMgr {
   enum ModeType {
     MODE_VERSION  = 0,
-    MODE_RENAME   = 1
+    MODE_RENAME   = 1,
+    MODE_SIGN     = 2
   };
 
   class ModeController: public Singleton {
