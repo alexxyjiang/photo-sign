@@ -1,4 +1,4 @@
-/** mode.h  - Image Name Management
+/** imagename.h - Image Name Management
  *  @author:  Alex.J. (alexxyjiang@gmail.com)
  *  @date:    2016-09-25
  */
