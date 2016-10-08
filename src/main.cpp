@@ -1,10 +1,14 @@
 #include "gflags/gflags.h"
 #include "FreeImagePlus.h"
 #include "mode.h"
+#include "signconf.h"
+#include "signchooser.h"
 #include "version.h"
 
 using google::ParseCommandLineFlags;
 using PhotoMgr::ModeController;
+using PhotoMgr::SignPhotoMgr;
+using PhotoMgr::sign_conf_t;
 using PhotoMgr::set_photomgr_version;
 using PhotoMgr::print_all_version_info;
 
@@ -21,6 +25,15 @@ int main(int argc, char** argv)
       break;
     case PhotoMgr::MODE_RENAME:
       break;
+    case PhotoMgr::MODE_SIGN:
+      SignPhotoMgr  spmgr(argv[1], argv[2]);
+      sign_conf_t   sign_conf;
+      sign_conf.min_sign_margin = 100;
+      sign_conf.sign_posi       = PhotoMgr::BOTTOM_RIGHT;
+      sign_conf.sign_rate       = 0.15;
+      spmgr.sign_all_photos(sign_conf);
+      break;
   }
+
   return 0;
 }
