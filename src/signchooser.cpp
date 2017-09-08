@@ -188,7 +188,7 @@ namespace PhotoMgr {
           if (fip_src.load(ostr_fullname.str().c_str()) && 0 == sdr.sign_photo(&fip_dest, &fip_src, sign_conf)) {
             std::ostringstream  ostr;
             ostr  << _photo_path << "/SIGN_" << ep->d_name;
-            fip_dest.save(ostr.str().c_str());
+            fip_dest.save(ostr.str().c_str(), JPEG_QUALITYSUPERB);
           }
         }
       } else {
