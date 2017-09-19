@@ -151,8 +151,16 @@ namespace PhotoMgr {
           RGBQUAD   mean_color    = cmgr_sub_sign.mean_color();
           HSVACOLOR mean_hsva     = convert_rgba2hsva(mean_color);
           HSVACOLOR reverse_hsva  = reversed_hsva_color(mean_hsva);
-          reverse_hsva.s = 1.0;
-          reverse_hsva.v = 1.0;
+          if (reverse_hsva.s < 0.3820) {
+            reverse_hsva.s = 0.6180;
+          } else {
+            reverse_hsva.s = 1.0;
+          }
+          if (reverse_hsva.v < 0.3820) {
+            reverse_hsva.v = 0.6180;
+          } else {
+            reverse_hsva.v = 1.0;
+          }
           reverse_color = convert_hsva2rgba(reverse_hsva);
         }
       }

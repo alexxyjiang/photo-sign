@@ -102,6 +102,7 @@ namespace PhotoMgr {
     if (res.h > 360.0) {
       res.h -= 360.0;
     }
+    res.v = 1.0 - res.v;
     return res;
   }
 
