@@ -8,7 +8,10 @@
 #include <cmath>
 #include <dirent.h>
 #include "FreeImagePlus.h"
+#include "hsvcolor.h"
 #include "signchooser.h"
+
+DEFINE_bool(auto_sign_color, false, "auto decide which color to use for sign");
 
 namespace PhotoMgr {
   // ColorMgr - public
@@ -140,15 +143,35 @@ namespace PhotoMgr {
       if (FLAGS_auto_sign_scale) {
         fip_sign.rescale(p_sign_chosen->getWidth() * best_scale, p_sign_chosen->getHeight() * best_scale, FILTER_LANCZOS3);
       }
+      RGBQUAD reverse_color;
+      if (FLAGS_auto_sign_color) {
+        fipImage  sub_image_sign;
+        if (p_dest->copySubImage(sub_image_sign, best_x0, best_y0, best_x1, best_y1)) {
+          ColorMgr  cmgr_sub_sign(&sub_image_sign);
+          RGBQUAD   mean_color    = cmgr_sub_sign.mean_color();
+          HSVACOLOR mean_hsva     = convert_rgba2hsva(mean_color);
+          HSVACOLOR reverse_hsva  = reversed_hsva_color(mean_hsva);
+          reverse_hsva.s = 1.0;
+          reverse_hsva.v = 1.0;
+          reverse_color = convert_hsva2rgba(reverse_hsva);
+        }
+      }
+
       for (unsigned i = 0; i < fip_sign.getHeight(); ++i) {
         for (unsigned j = 0; j < fip_sign.getWidth(); ++j) {
           RGBQUAD rgb_dest, rgb_sign;
           if (p_dest->getPixelColor(best_x0 + j, best_y0 + i, &rgb_dest) && fip_sign.getPixelColor(j, i, &rgb_sign) && rgb_sign.rgbReserved > 0) {
-
-            rgb_dest.rgbRed       = ((unsigned)rgb_dest.rgbRed    * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbRed    * rgb_sign.rgbReserved) / 255;
-            rgb_dest.rgbGreen     = ((unsigned)rgb_dest.rgbGreen  * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbGreen  * rgb_sign.rgbReserved) / 255;
-            rgb_dest.rgbBlue      = ((unsigned)rgb_dest.rgbBlue   * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbBlue   * rgb_sign.rgbReserved) / 255;
-            rgb_dest.rgbReserved  = 0;
+            if (FLAGS_auto_sign_color) {
+              rgb_dest.rgbRed       = ((unsigned)rgb_dest.rgbRed    * (255 - rgb_sign.rgbReserved) + (unsigned)reverse_color.rgbRed    * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbGreen     = ((unsigned)rgb_dest.rgbGreen  * (255 - rgb_sign.rgbReserved) + (unsigned)reverse_color.rgbGreen  * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbBlue      = ((unsigned)rgb_dest.rgbBlue   * (255 - rgb_sign.rgbReserved) + (unsigned)reverse_color.rgbBlue   * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbReserved  = 0;
+            } else {
+              rgb_dest.rgbRed       = ((unsigned)rgb_dest.rgbRed    * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbRed    * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbGreen     = ((unsigned)rgb_dest.rgbGreen  * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbGreen  * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbBlue      = ((unsigned)rgb_dest.rgbBlue   * (255 - rgb_sign.rgbReserved) + (unsigned)rgb_sign.rgbBlue   * rgb_sign.rgbReserved) / 255;
+              rgb_dest.rgbReserved  = 0;
+            }
 
             p_dest->setPixelColor(best_x0 + j, best_y0 + i, &rgb_dest);
           }

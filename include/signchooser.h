@@ -11,6 +11,8 @@
 #include "FreeImagePlus.h"
 #include "signconf.h"
 
+DECLARE_bool(auto_sign_color);
+
 namespace PhotoMgr {
   class ColorMgr {
   private:
